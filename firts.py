@@ -313,9 +313,13 @@ b = 0
 
 while b == 0 :
     print(" Iniciando sistema da Universidade Celestial de Canudos")
+    
     print_com_atraso(2)
+
     print("Oque voce deseja?")
+
     print_com_atraso(1)
+
     resposta = input("1) Matricular nova pessoa: \n2) Ver dados de funcionario ou aluno:\n Resposta: ")
 
 
