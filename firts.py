@@ -309,18 +309,56 @@ class CoordenadorAdm(Salario, Funcionario):
 def print_com_atraso(atraso_segundos):
     time.sleep(atraso_segundos)
 
-b = 0 
 
-while b == 0 :
-    print(" Iniciando sistema da Universidade Celestial de Canudos")
-    
+while True:
+    print("Iniciando sistema da Universidade Celestial de Canudos")
     print_com_atraso(2)
 
-    print("Oque voce deseja?")
+    resposta = input("A) Matricular nova pessoa:\nB) Ver dados de funcionario ou aluno:\nResposta: ").upper()
 
-    print_com_atraso(1)
+    while resposta not in ["A", "B"]:
+        print("Opção inválida. Digite 'A' para Matricular nova pessoa ou 'B' para Ver dados de funcionario ou aluno.")
+        resposta = input("Resposta: ").upper()
 
-    resposta = input("1) Matricular nova pessoa: \n2) Ver dados de funcionario ou aluno:\n Resposta: ")
+    if resposta == "A":
+        print("Universidade Celestial de Canudos\n      MATRICULA")
+        print_com_atraso(1)
+        matricular = input("O que deseja matricular:\nA) Matricular Aluno\nB) Matricular Funcionario\nResposta: ").upper()
 
+        while matricular not in ["A", "B"]:
+            print("Opção inválida. Digite 'A' para Matricular Aluno ou 'B' para Matricular Funcionário.")
+            matricular = input("Resposta: ").upper()
 
-    b = 1
+        if matricular == "A":
+            print("Iniciando matricula do aluno")
+            print_com_atraso(0.5)
+        elif matricular == "B":
+            print("Aqui esta a lista com todos os Cargos:")
+            # lista com Cargos dos funcionarios
+            print("Enumere o cargo que deseja cadastrar:")
+            # chama a classe e inicia o cadastro
+
+    elif resposta == "B":
+        visuDados = input("Voce deseja ver dados dos:\nA) Alunos\nB) Funcionarios\nResposta: ").upper()
+
+        while visuDados not in ["A", "B"]:
+            print("Opção inválida. Digite 'A' para ver dados dos Alunos ou 'B' para ver dados dos Funcionários.")
+            visuDados = input("Resposta: ").upper()
+
+        if visuDados == "A":
+            print("Aqui esta a lista com todos os Alunos:")
+            # lista com nomes de todos alunos
+            print("Enumere o aluno que deseja ver:")
+        elif visuDados == "B":
+            print("Aqui esta a lista com todos os Cargos:")
+            # lista com Cargos dos funcionarios
+            print("Enumere o cargo que deseja ver:")
+            # lista com nomes de todos funcionarios do cargo escolhido
+
+    finalizar = input("Digite 'C' para fechar o programa ou 'D' para recomeçar: ").upper()
+    while finalizar not in ["C", "D"]:
+        print("Opção inválida. Digite 'C' para fechar o programa ou 'D' para recomeçar.")
+        finalizar = input("Resposta: ").upper()
+
+    if finalizar == "C":
+        break  
