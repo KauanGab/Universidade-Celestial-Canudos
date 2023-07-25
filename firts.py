@@ -20,8 +20,9 @@ class Aluno(Pessoa):
     def __init__(self, nome: str, rg: str, cpf: str, anoNasc: int, mesNasc: int, diaNasc: int, sexo: str, curso: str):
         super().__init__(nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo)
         self.curso= curso
+        self.listalun = None
 
-    
+
     def CadastrarAluno(self):
         arquivo_csv = "lista_alunos.csv"
         try:
@@ -42,10 +43,9 @@ class Aluno(Pessoa):
         df = pd.concat([df, novo_aluno], ignore_index=True)
         df.to_csv(arquivo_csv, index=False)
 
-        
 
     def ExibirAluno(self):
-        a = 0
+        print(self.listalun)
 
 
 class Funcionario(Pessoa):
@@ -200,11 +200,10 @@ class CoordenadorAdm(Funcionario):
     def exibirCoordenadorAdm(self):
         a=0
 
-
- 
-        
+       
 def print_com_atraso(atraso_segundos):
     time.sleep(atraso_segundos)
+
 
 while True:
     print("Iniciando sistema da Universidade Celestial de Canudos")
@@ -316,14 +315,89 @@ while True:
             visuDados = input("Resposta: ").upper()
 
         if visuDados == "A":
-            print("Aqui esta a lista com todos os Alunos:")
-            # lista com nomes de todos alunos
-            print("Enumere o aluno que deseja ver:")
+            print("Aqui está a lista com todos os Alunos: ")
+            df = pd.read_csv('lista_alunos.csv')
+            print(df[['ID', 'Nome']].to_string(index=False))
+
+            aluno_encontrado = False
+
+            while not aluno_encontrado:
+                test = int(input("Informe o número do ID do aluno que deseja visualizar: "))
+
+                for i in df['ID']:
+                    if i == test:
+                        print("\n \n     DADOS")
+                        test= test-1
+                        print(df.iloc[test])
+                        aluno_encontrado = True
+                        break
+
+                if not aluno_encontrado:
+                    print("ID não encontrado. Por favor, informe um número de ID válido.\n")                    
+                    
+
         elif visuDados == "B":
             print("Aqui esta a lista com todos os Cargos:")
-            # lista com Cargos dos funcionarios
-            print("Enumere o cargo que deseja ver:")
-            # lista com nomes de todos funcionarios do cargo escolhido
+            print("1)Professor \n2)Coordenador Professor\n3)Coordenador Administrador")
+            cargo = input("Enumere o cargo do funcionario que deseja inspecionar:")
+            while cargo not in ["1", "2","3"]:
+                print("Opção inválida. Digite '1' para Professor, '2' para Coordenador Professor ou '3' para Coordenador Administrador.")
+                cargo = input("Resposta: ").upper()
+            if cargo == "1":
+                print("Aqui esta a lista com todos os professores: ")
+                df = pd.read_csv('lista_professores.csv')
+                print(df[['ID', 'Nome']].to_string(index=False))
+
+                professor_encontrado = False
+
+                while not professor_encontrado:            
+                    test = int(input("Informe o número do ID do Professor que deseja visualizar: "))
+                    for i in df['ID']:
+                        if i == test:
+                            print("\n \n     Dados do professor")
+                            test-=1
+                            print(df.iloc[test])
+                            professor_encontrado=True
+                            break
+                    if not professor_encontrado:
+                        print("ID não encontrado. Por favor, informe um número de ID válido.\n")              
+
+            elif cargo == "2":
+                print("Aqui esta a lista com todos os Coordenador Professor: ")
+                df = pd.read_csv('lista_coordnadores_professores.csv')
+                print(df[['ID', 'Nome']].to_string(index=False))            
+                coordenador_professor_encontrado = False
+
+                while not coordenador_professor_encontrado :            
+                    test = int(input("Informe o número do ID do Coordenador Professor que deseja visualizar: "))
+                    for i in df['ID']:
+                        if i == test:
+                            print("\n \n Dados do Coordenador Professor")
+                            test-=1
+                            print(df.iloc[test])
+                            coordenador_professor_encontrado =True
+                            break
+                    if not coordenador_professor_encontrado:
+                        print("ID não encontrado. Por favor, informe um número de ID válido.\n") 
+                
+            elif cargo == "3":
+                print("Aqui esta a lista com todos os Coordenador Administrativo: ")
+                df = pd.read_csv('lista_coordenadores_administrativo.csv')
+                print(df[['ID', 'Nome']].to_string(index=False))            
+                coordenador_administrativo_encontrado = False
+
+                while not coordenador_administrativo_encontrado :            
+                    test = int(input("Informe o número do ID do Coordenador Administrativo que deseja visualizar: "))
+                    for i in df['ID']:
+                        if i == test:
+                            print("\n \n Dados do Coordenador Administrativo")
+                            test-=1
+                            print(df.iloc[test])
+                            coordenador_administrativo_encontrado = True
+                            break
+                    if not coordenador_administrativo_encontrado:
+                        print("ID não encontrado. Por favor, informe um número de ID válido.\n") 
+
 
     finalizar = input("Digite 'C' para fechar o programa ou 'D' para recomeçar: ").upper()
     while finalizar not in ["C", "D"]:
@@ -333,9 +407,9 @@ while True:
     if finalizar == "C":
         print("Programa fechando em")
         print("3")
-        print_com_atraso(1)
+        print_com_atraso(0.5)
         print("2")
-        print_com_atraso(1)
+        print_com_atraso(0.5)
         print("1")
-        print_com_atraso(1)
-        break  
+        print_com_atraso(0.5)
+        break
