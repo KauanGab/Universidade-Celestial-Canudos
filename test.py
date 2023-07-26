@@ -5,6 +5,32 @@ import time
 from abc import ABC, abstractmethod
 import random
 
+
+def viewDados(categoria: str, diretorio: str):
+    print(f"Aqui está a lista com todos os {categoria}: ")
+    df = pd.read_csv(diretorio)
+    if df.empty:
+        print("A lista está vazia.")
+    else:
+        print(df[['ID', 'Nome']].to_string(index=False))
+
+        disjuntor = False
+
+        while not disjuntor:
+            try:
+                test = int(input(f"Informe o número do ID do {categoria} que deseja visualizar: "))
+
+                if test < 1 or test > len(df):
+                    print("ID inválido. Por favor, informe um número de ID válido.\n")
+                else:
+                    print("\n\n     DADOS")
+                    test = test - 1
+                    print(df.iloc[test])
+                    disjuntor = True
+            except ValueError:
+                print("Entrada inválida. Por favor, informe um número inteiro válido.\n")
+
+
 class Pessoa(ABC):
     def __init__(self, nome: str, rg: str, cpf: str, anoNasc: int, mesNasc: int, diaNasc: int, sexo: str):
         self.nome = nome
@@ -209,9 +235,9 @@ while True:
     print("Iniciando sistema da Universidade Celestial de Canudos")
     print_com_atraso(2)
 
-    resposta = input("A) Matricular nova pessoa:\nB) Ver dados de funcionario ou aluno:\nResposta: ").upper()
+    resposta = input("A) Matricular nova pessoa:\nB) Ver dados de funcionario ou aluno:\nC) Apagar dados:\nResposta: ").upper()
 
-    while resposta not in ["A", "B"]:
+    while resposta not in ["A", "B", "C"]:
         print("Opção inválida. Digite 'A' para Matricular nova pessoa ou 'B' para Ver dados de funcionario ou aluno.")
         resposta = input("Resposta: ").upper()
 
@@ -315,25 +341,8 @@ while True:
             visuDados = input("Resposta: ").upper()
 
         if visuDados == "A":
-            print("Aqui está a lista com todos os Alunos: ")
-            df = pd.read_csv('lista_alunos.csv')
-            print(df[['ID', 'Nome']].to_string(index=False))
-
-            aluno_encontrado = False
-
-            while not aluno_encontrado:
-                test = int(input("Informe o número do ID do aluno que deseja visualizar: "))
-
-                for i in df['ID']:
-                    if i == test:
-                        print("\n \n     DADOS")
-                        test= test-1
-                        print(df.iloc[test])
-                        aluno_encontrado = True
-                        break
-
-                if not aluno_encontrado:
-                    print("ID não encontrado. Por favor, informe um número de ID válido.\n")                    
+            viewDados("Alunos", "lista_alunos.csv")                   
+                    
 
         elif visuDados == "B":
             print("Aqui esta a lista com todos os Cargos:")
@@ -345,44 +354,177 @@ while True:
             if cargo == "1":
                 print("Aqui esta a lista com todos os professores: ")
                 df = pd.read_csv('lista_professores.csv')
-                print(df[['ID', 'Nome']].to_string(index=False))            
-                test = int(input("Informe o número do ID do Professor que deseja visualizar: "))
-                for i in df['ID']:
-                    if i == test:
-                        print("\n \n     Dados do professor")
-                        test-=1
-                        print(df.iloc[test])
-                        break
-                else:
-                    continue                
+                print(df[['ID', 'Nome']].to_string(index=False))
+
+                professor_encontrado = False
+
+                while not professor_encontrado:            
+                    test = int(input("Informe o número do ID do Professor que deseja visualizar: "))
+                    for i in df['ID']:
+                        if i == test:
+                            print("\n \n     Dados do professor")
+                            test-=1
+                            print(df.iloc[test])
+                            professor_encontrado=True
+                            break
+                    if not professor_encontrado:
+                        print("ID não encontrado. Por favor, informe um número de ID válido.\n")              
 
             elif cargo == "2":
                 print("Aqui esta a lista com todos os Coordenador Professor: ")
                 df = pd.read_csv('lista_coordnadores_professores.csv')
                 print(df[['ID', 'Nome']].to_string(index=False))            
-                test = int(input("Informe o número do ID do Coordenador Professor que deseja visualizar: "))
-                for i in df['ID']:  
-                    if i == test:         
+                coordenador_professor_encontrado = False
+
+                while not coordenador_professor_encontrado :            
+                    test = int(input("Informe o número do ID do Coordenador Professor que deseja visualizar: "))
+                    for i in df['ID']:
+                        if i == test:
                             print("\n \n Dados do Coordenador Professor")
                             test-=1
                             print(df.iloc[test])
+                            coordenador_professor_encontrado =True
                             break
-                    else:
-                        continue
+                    if not coordenador_professor_encontrado:
+                        print("ID não encontrado. Por favor, informe um número de ID válido.\n") 
                 
             elif cargo == "3":
                 print("Aqui esta a lista com todos os Coordenador Administrativo: ")
                 df = pd.read_csv('lista_coordenadores_administrativo.csv')
                 print(df[['ID', 'Nome']].to_string(index=False))            
-                test = int(input("Informe o número do ID do Coordenador Administrativo que deseja visualizar: "))
-                for i in df['ID']:  
-                    if i == test:         
+                coordenador_administrativo_encontrado = False
+
+                while not coordenador_administrativo_encontrado :            
+                    test = int(input("Informe o número do ID do Coordenador Administrativo que deseja visualizar: "))
+                    for i in df['ID']:
+                        if i == test:
                             print("\n \n Dados do Coordenador Administrativo")
                             test-=1
                             print(df.iloc[test])
+                            coordenador_administrativo_encontrado = True
                             break
-                    else:
-                        continue
+                    if not coordenador_administrativo_encontrado:
+                        print("ID não encontrado. Por favor, informe um número de ID válido.\n") 
+    elif resposta == "C":
+        delDados = input("Voce deseja apagar os dados de:\nA) Aluno\nB) Funcionario\nResposta: ").upper()
+
+        while delDados not in ["A", "B"]:
+            print("Opção inválida. Digite 'A' para apagar dados dos Alunos ou 'B' para apagar dados dos Funcionários.")
+            delDados = input("Resposta: ").upper()
+
+        if delDados == "A":
+            print("Aqui está a lista com todos os Alunos: ")
+            df = pd.read_csv('lista_alunos.csv')
+            print(df[['ID', 'Nome']].to_string(index=False))
+
+            aluno_encontrado = False
+
+            while not aluno_encontrado:
+                test = int(input("Informe o número do ID do aluno que deseja remover do sistema: "))
+
+                for i in df['ID']:
+                    if i == test:
+                        test -= 1
+                        confirma = input(f"\n \n Tem certeza que deseja apagar os dados de {df.loc[test, 'Nome']}\n Se quiser apagar use S, se nao use N: ").upper()
+                        if confirma == "S":
+                            df = df.drop(test)
+                            print("Aluno removido com sucesso.")
+                            print(df[['ID', 'Nome']].to_string(index=False))
+                            df.to_csv('lista_alunos.csv', index=False)
+                        elif confirma == "N":
+                            print("Operação cancelada.")
+                        aluno_encontrado = True
+
+                if not aluno_encontrado:
+                    print("ID não encontrado. Por favor, informe um número de ID válido.\n")
+
+        elif delDados == "B":
+                print("Aqui está a lista com todos os Funcionários: ")
+                print("1) Professor \n2) Coordenador Professor \n3) Coordenador Administrativo")
+                cargo = input("Enumere o cargo do funcionário que deseja remover: ")
+
+                while cargo not in ["1", "2", "3"]:
+                    print("Opção inválida. Digite '1' para remover um Professor, '2' para remover um Coordenador Professor ou '3' para remover um Coordenador Administrativo.")
+                    cargo = input("Resposta: ").upper()
+
+                if cargo == "1":
+                    print("Aqui está a lista com todos os Professores: ")
+                    df = pd.read_csv('lista_professores.csv')
+                    print(df[['ID', 'Nome']].to_string(index=False))
+
+                    professor_encontrado = False
+
+                    while not professor_encontrado:
+                        test = int(input("Informe o número do ID do Professor que deseja remover: "))
+
+                        for i in df['ID']:
+                            if i == test:
+                                test -= 1
+                                confirma = input(f"\n \n Tem certeza que deseja apagar os dados de {df.loc[test, 'Nome']}\n Se quiser apagar use S, se nao use N: ").upper()
+                                if confirma == "S":
+                                    df = df.drop(test)
+                                    print("Professor removido com sucesso.")
+                                    df.to_csv('lista_professores.csv', index=False)
+                                elif confirma == "N":
+                                    print("Operação cancelada.")
+                                professor_encontrado = True
+
+                        if not professor_encontrado:
+                            print("ID não encontrado. Por favor, informe um número de ID válido.\n")
+
+                elif cargo == "2":
+                    print("Aqui está a lista com todos os Coordenadores Professor: ")
+                    df = pd.read_csv('lista_coordnadores_professores.csv')
+                    print(df[['ID', 'Nome']].to_string(index=False))
+
+                    coordenador_professor_encontrado = False
+
+                    while not coordenador_professor_encontrado:
+                        test = int(input("Informe o número do ID do Coordenador Professor que deseja remover: "))
+
+                        for i in df['ID']:
+                            if i == test:
+                                test -= 1
+                                confirma = input(f"\n \n Tem certeza que deseja apagar os dados de {df.loc[test, 'Nome']}\n Se quiser apagar use S, se nao use N: ").upper()
+                                if confirma == "S":
+                                    df = df.drop(test)
+                                    print("Coordenador Professor removido com sucesso.")
+                                    df.to_csv('lista_coordnadores_professores.csv', index=False)
+                                elif confirma == "N":
+                                    print("Operação cancelada.")
+                                coordenador_professor_encontrado = True
+
+                        if not coordenador_professor_encontrado:
+                            print("ID não encontrado. Por favor, informe um número de ID válido.\n")
+
+                elif cargo == "3":
+                    print("Aqui está a lista com todos os Coordenadores Administrativos: ")
+                    df = pd.read_csv('lista_coordenadores_administrativo.csv')
+                    print(df[['ID', 'Nome']].to_string(index=False))
+
+                    coordenador_administrativo_encontrado = False
+
+                    while not coordenador_administrativo_encontrado:
+                        test = int(input("Informe o número do ID do Coordenador Administrativo que deseja remover: "))
+
+                        for i in df['ID']:
+                            if i == test:
+                                test -= 1
+                                confirma = input(f"\n \n Tem certeza que deseja apagar os dados de {df.loc[test, 'Nome']}\n Se quiser apagar use S, se nao use N: ").upper()
+                                if confirma == "S":
+                                    df = df.drop(test)
+                                    print("Coordenador Administrativo removido com sucesso.")
+                                    df.to_csv('lista_coordenadores_administrativo.csv', index=False)
+                                elif confirma == "N":
+                                    print("Operação cancelada.")
+                                coordenador_administrativo_encontrado = True
+
+                        if not coordenador_administrativo_encontrado:
+                            print("ID não encontrado. Por favor, informe um número de ID válido.\n")
+
+
+
+
 
 
     finalizar = input("Digite 'C' para fechar o programa ou 'D' para recomeçar: ").upper()
