@@ -1,8 +1,7 @@
-import math
 import pandas as pd
 import numpy as np
 import time
-from abc import ABC, abstractmethod
+from abc import ABC
 import random
 
 class Pessoa(ABC):
