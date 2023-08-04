@@ -183,6 +183,19 @@ class CoordenadorAdm(Funcionario):
 def print_com_atraso(atraso_segundos):
     time.sleep(atraso_segundos)
 
+def get_data(tipo_pessoa):
+    print(f"Iniciando matricula do {tipo_pessoa}")
+    print_com_atraso(0.5)
+    nome = input(f"Nome do {tipo_pessoa}: ")
+    rg = int(input(f"RG do {tipo_pessoa}: "))
+    cpf = int(input(f"CPF do {tipo_pessoa}: "))
+    anoNasc = int(input(f"Ano de Nascimento do {tipo_pessoa}: "))
+    mesNasc = int(input(f"Mês de Nascimento do {tipo_pessoa}: "))
+    diaNasc = int(input(f"Dia de Nascimento do {tipo_pessoa}: "))
+    sexo = input(f"Sexo do {tipo_pessoa}: ").upper()
+
+    return nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo
+
 def viewDados(categoria: str, diretorio: str):
     print(f"Aqui está a lista com todos os {categoria}: ")
     df = pd.read_csv(diretorio)
@@ -253,88 +266,52 @@ while True:
             matricular = input("Resposta: ").upper()
 
         if matricular == "A":
-            print("Iniciando matricula do aluno")
-            print_com_atraso(0.5)
-            nome = input("Qual o nome do aluno: ")
-            rg = int(input("Qual o RG do aluno: "))
-            cpf = int(input("Qual o CPF do aluno: "))
-            ano = int(input("Qual ano aluno nasceu: "))
-            mes = int(input("Qual mes aluno nasceu: "))
-            dia = int(input("Qual dia aluno nasceu: "))
-            sexo = input("Qual o sexo do Aluno: ").upper()
-            curso = input("Qual o curso do Aluno: ")
-
-            aluno_obj = Aluno(nome, rg, cpf, ano, mes, dia, sexo, curso)
+            nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo = get_data("Aluno")
+            curso = input("Curso: ")
+            aluno_obj = Aluno(nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo, curso)
             aluno_obj.CadastrarAluno()
 
         elif matricular == "B":
-            print("Aqui esta a lista com todos os Cargos:")
-            print("1)Professor \n2)Coordenador Professor\n3)Coordenador Administrador")
-            cargo = input("Enumere o cargo que deseja cadastrar:")
+            nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo = get_data("Funcionario")
+            cargo = input("Enumere o cargo do Funcionario que deseja cadastrar \n1)Professor \n2)Coordenador Professor\n3)Coordenador Administrador\n Resposta:")
             while cargo not in ["1", "2","3"]:
                 print("Opção inválida. Digite '1' para Matricular um novo professor, '2' para Matricular um novo Coordenador Professor ou '3' para Matricular um novo Coordenador Administrador.")
                 cargo = input("Resposta: ").upper()
+                
             if cargo == "1":
-                print("Iniciando Cadastro do professor")
                 print_com_atraso(0.5)
-                nome = input("Qual o nome do professor: ")
-                rg = int(input("Qual o RG do professor: "))
-                cpf = int(input("Qual o CPF do professor: "))
-                ano = int(input("Qual ano professor nasceu: "))
-                mes = int(input("Qual mes professor nasceu: "))
-                dia = int(input("Qual dia professor nasceu: "))
-                sexo = input("Qual o sexo do professor: ").upper()
                 nivel = input("Qual o nivel do professor(Use I, II ou III): ").upper()
                 while nivel not in ["I", "II","III"]:
                     print("Opção inválida. Use I, II ou III para classificar o nivel do professor.")
                     nivel = input("Resposta: ").upper()
                 disciplina = input("Qual disciplina o professor vai ensinar: ")
 
-                professor_obj = Professor(nome, rg, cpf, ano, mes, dia, sexo, nivel, disciplina)
+                professor_obj = Professor(nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo, nivel, disciplina)
                 professor_obj.CadastrarProfessor()
 
             elif cargo == "2":
-                print("Iniciando Cadastro do Coordenador Professor")
                 print_com_atraso(0.5)
-                nome = input("Qual o nome do Coordenador Professor: ")
-                rg = int(input("Qual o RG do Coordenador Professor: "))
-                cpf = int(input("Qual o CPF do Coordenador Professor: "))
-                ano = int(input("Qual ano Coordenador Professor nasceu: "))
-                mes = int(input("Qual mes Coordenador Professor nasceu: "))
-                dia = int(input("Qual dia Coordenador Professor nasceu: "))
-                sexo = input("Qual o sexo do Coordenador Professor: ").upper()
                 nivel = input("Qual o nivel do Coordenador Professor(Use I,II,III): ").upper()
                 while nivel not in ["I", "II","III"]:
                     print("Opção inválida. Use I, II ou III para classificar o nivel do Coordenador Professor.")
                     nivel = input("Resposta: ").upper()
                 disciplina = input("Qual disciplina o Coordenador Professor vai ensinar: ")
                 area = input("Qual area o Coordenador Professor atuar: ")
-                
 
-                coorf_prof_obj = Coordenador(nome, rg, cpf, ano, mes, dia, sexo, nivel, disciplina, area)
+                coorf_prof_obj = Coordenador(nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo, nivel, disciplina, area)
                 coorf_prof_obj.CadastrarCoordenador()
 
             elif cargo == "3":
-                print("Iniciando Cadastro do Coordenador Administrativo")
                 print_com_atraso(0.5)
-                nome = input("Qual o nome do Coordenador Administrativo: ")
-                rg = int(input("Qual o RG do Coordenador Administrativo: "))
-                cpf = int(input("Qual o CPF do Coordenador Administrativo: "))
-                ano = int(input("Qual ano Coordenador Administrativo nasceu: "))
-                mes = int(input("Qual mes Coordenador Administrativo nasceu: "))
-                dia = int(input("Qual dia Coordenador Administrativo nasceu: "))
-                sexo = input("Qual o sexo do Coordenador Administrativo: ").upper()
                 nivel = input("Qual o nivel do Coordenador Administrativo(Use A,B,C,D,E): ").upper()
                 while nivel not in ["A", "B","C","D","E"]:
                     print("Opção inválida. Use A, B, C, D ou E para classificar o nivel do Coordenador Administrativo.")
                     nivel = input("Resposta: ").upper()
                 area = input("Qual area o Coordenador Administrativo atuar: ")
                 
-
-                coor_adm_obj = CoordenadorAdm(nome, rg, cpf, ano, mes, dia, sexo, nivel, area)
+                coor_adm_obj = CoordenadorAdm(nome, rg, cpf, anoNasc, mesNasc, diaNasc, sexo, nivel, area)
                 coor_adm_obj.cadastrarCoordenadorAdm()
             
-
     elif resposta == "B":
         visuDados = input("Voce deseja ver dados dos:\nA) Alunos\nB) Funcionarios\nResposta: ").upper()
 
@@ -349,6 +326,7 @@ while True:
             print("Aqui esta a lista com todos os Cargos:")
             print("1)Professor \n2)Coordenador Professor\n3)Coordenador Administrador")
             cargo = input("Enumere o cargo do funcionario que deseja inspecionar:")
+
             while cargo not in ["1", "2","3"]:
                 print("Opção inválida. Digite '1' para Professor, '2' para Coordenador Professor ou '3' para Coordenador Administrador.")
                 cargo = input("Resposta: ").upper()
@@ -387,13 +365,10 @@ while True:
                 elif cargo == "2":
                     remDados("Coordenadores Professor", "lista_coordnadores_professores.csv")
 
-
                 elif cargo == "3":
                     print("Aqui está a lista com todos os Coordenadores Administrativos: ")
                     df = pd.read_csv('lista_coordenadores_administrativo.csv')
                     remDados("Coordenadores Administrativos", "lista_coordenadores_administrativo.csv")
-
-
 
     finalizar = input("Digite 'C' para fechar o programa ou 'D' para recomeçar: ").upper()
     while finalizar not in ["C", "D"]:
